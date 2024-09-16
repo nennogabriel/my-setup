@@ -1,0 +1,108 @@
+###### GITIGNORE GLOBAL ######
+###### IDES AND TOOLS ######
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### Security Data ###
+.sqlite
+
+###### General Folders  and Files ######
+tmp/
+tmp/*
+build/
+build/*
+
+### General Temp Files ###
+cache/
+cache/*
+.cache/
+.cache/*
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+**/*.backup.*
+**/*.back.*
+
+###### Development and Production ######
+### Node ###
+node_modules/
+node_modules/*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+__snapshots__/*
+coverage/*
+.cache
+
+### NextJS ###
+.next/
+.next/*
+
+### Netlify CMS ###
+static/admin/*.bundle.*
+
+### Python ###
+.venv/
+.venv/*
+__pycache__/
+__pycache__/*
+*.py[cod]
+*$py.class
+
+###### OPERATIONAL SYSTEMS ######
+### MacOS ###
+.DS_Store
+.DS_*
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### Windows ###
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+$RECYCLE.BIN/*
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+### Linux ###
+*~
+.fuse_hidden*
+.Trash-*
+.nfs*
+
+### Runtime data ###
+pids
+*.pid
+*.seed
+*.pid.lock
