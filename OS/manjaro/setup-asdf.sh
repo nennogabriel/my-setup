@@ -4,6 +4,9 @@
 if ! command -v brew &> /dev/null; then
   echo "brew is not installed. Installing..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/nennogabriel/.zshrc
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  brew install gcc
   exit 1
 fi
 
@@ -11,6 +14,8 @@ fi
 if ! command -v asdf &> /dev/null; then
   echo "asdf is not installed. Installing..."
   brew install asdf
+  echo -e   '. /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.sh' >> $HOME/.zshrc
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   exit 1
 fi
 
