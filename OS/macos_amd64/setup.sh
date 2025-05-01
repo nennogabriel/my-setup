@@ -20,7 +20,7 @@ check_and_install() {
     local tool_name=$1
     local install_command=$2
     
-    if ! command -v "$tool_name" &> /dev/null; then
+    if command_exists "$tool_name"; then
         echo "$tool_name not found. Installing $tool_name..."
         eval "$install_command"
     else
@@ -62,7 +62,8 @@ install_mas_app() {
     local app_id=$1
     local app_name=$2
     
-    if ! mas list | grep -q "$app_id"; then
+    # Check if app is already installed using Spotlight metadata
+    if ! mdls -rn kMDItemAppStoreAdamID "/Applications/$app_name.app" 2>/dev/null | grep -q "$app_id"; then
         echo "Installing $app_name..."
         mas install "$app_id"
     else
@@ -85,16 +86,13 @@ print_header "Installing Package Managers"
 
 # Install Homebrew (using bash specifically for Homebrew installation)
 print_header "Installing Homebrew"
-if ! command_exists "brew"; then
-    eval '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-    # Add Homebrew to PATH for Apple Silicon Macs
-    if [[ $(uname -m) == 'arm64' ]]; then
-        echo "Configuring Homebrew for Apple Silicon..."
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
-else
-    echo "Homebrew is already installed"
+check_and_install "brew" '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+
+# Add Homebrew to PATH for Apple Silicon Macs
+if [[ $(uname -m) == 'arm64' ]]; then
+    echo "Configuring Homebrew for Apple Silicon..."
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Install git
@@ -112,21 +110,13 @@ check_and_install "unixodbc" "brew install unixodbc"
 print_header "Installing asdf"
 check_and_install "asdf" "brew install asdf"
 
- # Install mas-cli
- print_header "Installing Mac App Store cli (mas)"
- check_and_install "mas" "brew install mas"
-
-# Check if logged into Mac App Store
-if ! mas account >/dev/null; then
-    echo "⚠️ You need to be logged into the Mac App Store to install Mac App Store apps"
-    echo "Please open the Mac App Store and sign in, then run this script again"
-    exit 1
-fi
-
+# Install mas-cli
+print_header "Installing Mac App Store cli (mas)"
+check_and_install "mas" "brew install mas"
 
 print_header "Installing Fonts"
-brew install font-jetbrains-mono-nerd-font
-brew install font-meslo-lg-nerd-font
+check_and_install "font-jetbrains-mono-nerd-font" "brew install font-jetbrains-mono-nerd-font"
+check_and_install "font-meslo-lg-nerd-font" "brew install font-meslo-lg-nerd-font"
 
 
 

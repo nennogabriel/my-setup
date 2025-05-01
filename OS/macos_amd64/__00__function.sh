@@ -20,7 +20,7 @@ check_and_install() {
     local tool_name=$1
     local install_command=$2
     
-    if ! command -v "$tool_name" &> /dev/null; then
+    if command_exists "$tool_name"; then
         echo "$tool_name not found. Installing $tool_name..."
         eval "$install_command"
     else
@@ -62,7 +62,8 @@ install_mas_app() {
     local app_id=$1
     local app_name=$2
     
-    if ! mas list | grep -q "$app_id"; then
+    # Check if app is already installed using Spotlight metadata
+    if ! mdls -rn kMDItemAppStoreAdamID "/Applications/$app_name.app" 2>/dev/null | grep -q "$app_id"; then
         echo "Installing $app_name..."
         mas install "$app_id"
     else
