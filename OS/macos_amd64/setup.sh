@@ -11,7 +11,11 @@ print_header() {
 
 # Check if a command exists
 command_exists() {
+    echo "Checking if $1 exists..."
     command -v "$1" &>/dev/null
+    local result=$?
+    echo "Command $1 check result: $result"
+    return $result
 }
 
 # Function to check if a tool is installed and install it if needed
@@ -20,7 +24,8 @@ check_and_install() {
     local tool_name=$1
     local install_command=$2
     
-    if command_exists "$tool_name"; then
+    echo "Checking tool: $tool_name"
+    if ! command_exists "$tool_name"; then
         echo "$tool_name not found. Installing $tool_name..."
         eval "$install_command"
     else
@@ -109,6 +114,15 @@ check_and_install "unixodbc" "brew install unixodbc"
 # Install asdf
 print_header "Installing asdf"
 check_and_install "asdf" "brew install asdf"
+
+# Add asdf to shell
+if ! grep -q "asdf.sh" ~/.zshrc; then
+    echo "Adding asdf to ~/.zshrc"
+    echo -e "\n# asdf version manager" >> ~/.zshrc
+    echo '. "$(brew --prefix asdf)/libexec/asdf.sh"' >> ~/.zshrc
+    echo '. "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"' >> ~/.zshrc
+    source ~/.zshrc
+fi
 
 # Install mas-cli
 print_header "Installing Mac App Store cli (mas)"
@@ -236,7 +250,7 @@ check_and_install "tradingview" "brew install tradingview"
 check_and_install "visual-studio-code" "brew install visual-studio-code"
 check_and_install "cursor" "brew install cursor"
 check_and_install "orbstack" "brew install orbstack"
-check_and_install "rambox" "brew install rambox"
+# check_and_install "rambox" "brew install rambox"
 
 # Homebrew Command Line Tools
 print_header "Installing Homebrew Command Line Tools"
@@ -267,4 +281,47 @@ install_mas_app "1440147259" "AdGuard for Safari"
 # install_mas_app "1607635845" "Velja"
 # install_mas_app "1452453066" "Hidden Bar"
 # install_mas_app "1628987979" "Imageoptin"
-install_mas_app "1333542190" "1Password" 
+install_mas_app "1333542190" "1Password" #!/bin/bash
+
+# Download Git configuration files
+echo "Downloading Git configuration files..."
+
+# Create temporary directory
+TEMP_DIR=$(mktemp -d)
+
+# Clone the repository temporarily
+git clone --depth 1 https://github.com/nennogabriel/my-setup.git "$TEMP_DIR"
+
+# Copy Git configuration files if they don't exist
+if [ ! -f "$HOME/.gitconfig" ]; then
+    cp "$TEMP_DIR/apps/git/files/.gitconfig" "$HOME/.gitconfig"
+    echo "Created new .gitconfig"
+else
+    echo ".gitconfig already exists, skipping..."
+fi
+
+if [ ! -f "$HOME/.gitignore" ]; then
+    cp "$TEMP_DIR/apps/git/files/.gitignore" "$HOME/.gitignore"
+    echo "Created new .gitignore"
+else
+    echo ".gitignore already exists, skipping..."
+fi
+
+# Copy scripts if they exist and destination doesn't
+if [ -d "$TEMP_DIR/apps/git/files/.my-scripts" ]; then
+    mkdir -p "$HOME/.my-scripts"
+    for file in "$TEMP_DIR/apps/git/files/.my-scripts/"*; do
+        filename=$(basename "$file")
+        if [ ! -f "$HOME/.my-scripts/$filename" ]; then
+            cp "$file" "$HOME/.my-scripts/"
+            echo "Created new script: $filename"
+        else
+            echo "Script $filename already exists, skipping..."
+        fi
+    done
+fi
+
+# Clean up
+rm -rf "$TEMP_DIR"
+
+echo "Git configuration files download completed!" 

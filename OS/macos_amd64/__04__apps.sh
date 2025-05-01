@@ -15,7 +15,7 @@ check_and_install "tradingview" "brew install tradingview"
 check_and_install "visual-studio-code" "brew install visual-studio-code"
 check_and_install "cursor" "brew install cursor"
 check_and_install "orbstack" "brew install orbstack"
-check_and_install "rambox" "brew install rambox"
+# check_and_install "rambox" "brew install rambox"
 
 # Homebrew Command Line Tools
 print_header "Installing Homebrew Command Line Tools"

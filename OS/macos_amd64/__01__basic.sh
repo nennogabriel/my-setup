@@ -38,6 +38,15 @@ check_and_install "unixodbc" "brew install unixodbc"
 print_header "Installing asdf"
 check_and_install "asdf" "brew install asdf"
 
+# Add asdf to shell
+if ! grep -q "asdf.sh" ~/.zshrc; then
+    echo "Adding asdf to ~/.zshrc"
+    echo -e "\n# asdf version manager" >> ~/.zshrc
+    echo '. "$(brew --prefix asdf)/libexec/asdf.sh"' >> ~/.zshrc
+    echo '. "$(brew --prefix asdf)/etc/bash_completion.d/asdf.bash"' >> ~/.zshrc
+    source ~/.zshrc
+fi
+
 # Install mas-cli
 print_header "Installing Mac App Store cli (mas)"
 check_and_install "mas" "brew install mas"

@@ -11,7 +11,11 @@ print_header() {
 
 # Check if a command exists
 command_exists() {
+    echo "Checking if $1 exists..."
     command -v "$1" &>/dev/null
+    local result=$?
+    echo "Command $1 check result: $result"
+    return $result
 }
 
 # Function to check if a tool is installed and install it if needed
@@ -20,7 +24,8 @@ check_and_install() {
     local tool_name=$1
     local install_command=$2
     
-    if command_exists "$tool_name"; then
+    echo "Checking tool: $tool_name"
+    if ! command_exists "$tool_name"; then
         echo "$tool_name not found. Installing $tool_name..."
         eval "$install_command"
     else
