@@ -34,23 +34,25 @@ else
     echo "zsh-syntax-highlighting is already installed"
 fi
 
-# Create or update .zshrc
-cat > ~/.zshrc << 'EOL'
-# Enable Powerlevel10k theme
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# Add configurations to .zshrc if they don't exist
+if ! grep -q "ZSH_THEME=\"powerlevel10k/powerlevel10k\"" ~/.zshrc; then
+    echo "Adding Powerlevel10k theme to .zshrc..."
+    echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' >> ~/.zshrc
+fi
 
-# Plugins
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+if ! grep -q "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)" ~/.zshrc; then
+    echo "Adding plugins to .zshrc..."
+    echo 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting)' >> ~/.zshrc
+fi
 
-# Source Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+if ! grep -q "source \$ZSH/oh-my-zsh.sh" ~/.zshrc; then
+    echo "Adding Oh My Zsh source to .zshrc..."
+    echo 'source $ZSH/oh-my-zsh.sh' >> ~/.zshrc
+fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-EOL
+if ! grep -q "source ~/.p10k.zsh" ~/.zshrc; then
+    echo "Adding Powerlevel10k configuration to .zshrc..."
+    echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc
+fi
 
 echo "Terminal setup complete! Please restart your terminal to apply changes." 
