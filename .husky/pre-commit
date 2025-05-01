@@ -1,14 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 # Concatenate all numbered files in OS/macos_amd64 directory
 cd OS/macos_amd64
-
-# Find all files starting with __ and sort them numerically
-files=$(ls -1 __* | sort -V)
-
-# Concatenate all files in order
-cat $files > setup.sh
-
-# Add the generated setup.sh to git
-git add setup.sh 
+ls -1 __* | sort -V | xargs cat > setup.sh
+git add setup.sh
