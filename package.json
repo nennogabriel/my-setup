@@ -1,0 +1,24 @@
+{
+  "name": "my-setup",
+  "version": "1.0.0",
+  "description": "Simple scripts to setup development environments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nennogabriel/my-setup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nennogabriel/my-setup/issues"
+  },
+  "homepage": "https://github.com/nennogabriel/my-setup#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
