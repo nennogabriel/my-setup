@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Concatenate all numbered files in OS/macos_amd64 directory
+cd OS/macos_amd64
+cat __00__function.sh __01__pack-managers.sh > setup.sh
+git add setup.sh 
